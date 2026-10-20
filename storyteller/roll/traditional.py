@@ -1,7 +1,7 @@
 """Module for performing simple, traditional dice rolls."""
 
 import re
-from random import randint
+from random import SystemRandom
 from collections import namedtuple
 
 import dice
@@ -10,6 +10,8 @@ import dice
 TraditionalRoll = namedtuple(
     "TraditionalRoll", ["equation", "total", "is_initiative"], module="roll.traditional"
 )
+
+__rng   = SystemRandom()
 __rollx = re.compile(r"(?P<dice>\d+d\d+)")
 __initx = re.compile(r"^1d10\s*\+\s*\d+$")
 
@@ -22,7 +24,7 @@ def roll(repeat: int, die: int) -> list:
         die (int): The type of die to roll, such as d10
     Returns (list): The results of the rolls
     """
-    return [randint(1, die) for _ in range(repeat)]
+    return [__rng.randint(1, die) for _ in range(repeat)]
 
 
 def roll_from_string(equation: str) -> TraditionalRoll:
